@@ -1,6 +1,5 @@
 "use client";
 
-import Breadcrumb from "../../Common/Breadcrumb";
 import Link from "next/link";
 import React, { useState } from "react";
 import { loginCustomer} from "@/Helper/handleapi";
@@ -107,7 +106,8 @@ const Signin = () => {
 
   return (
     <>
-      <Breadcrumb title={"Signin"} />
+     <div className="min-h-screen bg-gray-50 py-8">
+
       <section className="overflow-hidden py-20 bg-gray-2">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
           <div className="max-w-[570px] w-full mx-auto rounded-xl bg-white shadow-1 p-4 sm:p-7.5 xl:p-11">
@@ -183,6 +183,7 @@ const Signin = () => {
           </div>
         </div>
       </section>
+      </div>
     </>
   );
 };

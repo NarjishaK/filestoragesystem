@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import Breadcrumb from "../../Common/Breadcrumb";
 import { Customersignup } from "@/Helper/handleapi";
 import Swal from "sweetalert2";
 
@@ -91,7 +90,7 @@ const Signup = () => {
 
   return (
     <>
-      <Breadcrumb title={"Signup"} />
+    <div className="min-h-screen bg-gray-50 py-8">
       <section className="overflow-hidden py-20 bg-gray-2">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
           <div className="max-w-[570px] w-full mx-auto rounded-xl bg-white shadow-1 p-4 sm:p-7.5 xl:p-11">
@@ -233,6 +232,7 @@ const Signup = () => {
           </div>
         </div>
       </section>
+      </div>
     </>
   );
 };
