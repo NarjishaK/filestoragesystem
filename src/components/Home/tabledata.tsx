@@ -174,127 +174,124 @@ const ContentArea: React.FC<ContentAreaProps> = ({
             ))}
           </div>
         ) : (
-          <div className="bg-white border border-gray-3 rounded-lg overflow-hidden">
-            <div className="grid grid-cols-12 gap-4 p-4 bg-gray-1 border-b border-gray-3 font-medium text-dark text-sm">
-              <div className="col-span-1">
-                <input
-                  type="checkbox"
-                  checked={
-                    selectedFiles.length === filteredFiles.length &&
-                    filteredFiles.length > 0
-                  }
-                  onChange={(e) => onSelectAll(e.target.checked)}
-                  className="rounded"
-                />
-              </div>
-              <div className="col-span-5">Name</div>
-              <div className="col-span-2">Size</div>
-              <div className="col-span-2">Date</div>
-              <div className="col-span-2">Actions</div>
-            </div>
+         <div className="bg-white border border-gray-3 rounded-lg overflow-x-auto">
+  <div className="hidden sm:grid grid-cols-12 gap-4 p-4 bg-gray-1 border-b border-gray-3 font-medium text-dark text-sm">
+    <div className="col-span-1">
+      <input
+        type="checkbox"
+        checked={
+          selectedFiles.length === filteredFiles.length &&
+          filteredFiles.length > 0
+        }
+        onChange={(e) => onSelectAll(e.target.checked)}
+        className="rounded"
+      />
+    </div>
+    <div className="col-span-5">Name</div>
+    <div className="col-span-2">Size</div>
+    <div className="col-span-2">Date</div>
+    <div className="col-span-2">Actions</div>
+  </div>
 
-            {/* Folders in list view */}
-            {filteredFolders.map((folder) => (
-              <div
-                key={folder.id}
-                className="grid grid-cols-12 gap-4 p-4 border-b border-gray-3 hover:bg-gray-1 duration-200 cursor-pointer"
-                onDoubleClick={() => onFolderNavigate(folder.id)}
-              >
-                <div className="col-span-1"></div>
-                <div className="col-span-5 flex items-center gap-3">
-                  <Folder className="w-5 h-5 text-blue flex-shrink-0" />
-                  <span className="font-medium text-dark truncate">
-                    {folder.name}
-                  </span>
-                </div>
-                <div className="col-span-2 text-dark-4 text-sm">—</div>
-                <div className="col-span-2 text-dark-4 text-sm">
-                  {folder.createdAt.toLocaleDateString()}
-                </div>
-              </div>
-            ))}
+  {/* Folders */}
+  {filteredFolders.map((folder) => (
+    <div
+      key={folder.id}
+      onDoubleClick={() => onFolderNavigate(folder.id)}
+      className="sm:grid sm:grid-cols-12 gap-4 p-4 border-b border-gray-3 hover:bg-gray-1 duration-200 cursor-pointer flex flex-col sm:flex-row"
+    >
+      <div className="sm:col-span-1 hidden sm:block" />
+      <div className="sm:col-span-5 flex items-center gap-3">
+        <Folder className="w-5 h-5 text-blue flex-shrink-0" />
+        <span className="font-medium text-dark truncate">{folder.name}</span>
+      </div>
+      <div className="sm:col-span-2 text-dark-4 text-sm hidden sm:block">—</div>
+      <div className="sm:col-span-2 text-dark-4 text-sm">
+        {folder.createdAt.toLocaleDateString()}
+      </div>
+    </div>
+  ))}
 
-            {/* Files in list view */}
-            {filteredFiles.map((file) => (
-              <div
-                key={file.id}
-                className={`grid grid-cols-12 gap-4 p-4 border-b border-gray-3 hover:bg-gray-1 duration-200 cursor-pointer ${
-                  selectedFiles.includes(file.id) ? "bg-blue/5" : ""
-                }`}
-              >
-                <div className="col-span-1">
-                  <input
-                    type="checkbox"
-                    checked={selectedFiles.includes(file.id)}
-                    onChange={() => onFileSelect(file.id)}
-                    className="rounded"
-                  />
-                </div>
-                <div className="col-span-5 flex items-center gap-3">
-                  {file.type.startsWith("image/") ? (
-                    <img
-                      src={file.path}
-                      alt={file.name}
-                      className="w-12 h-12 object-cover rounded flex-shrink-0"
-                    />
-                  ) : file.type.startsWith("video/") ? (
-                    <video
-                      src={file.path}
-                      className="w-12 h-12 rounded flex-shrink-0 object-cover"
-                      muted
-                      loop
-                      playsInline
-                    />
-                  ) : file.type.includes("pdf") ? (
-                    <iframe
-                      src={`https://docs.google.com/gview?url=${encodeURIComponent(
-                        file.path
-                      )}&embedded=true`}
-                      className="w-12 h-12 rounded mb-3"
-                      title={file.name}
-                    />
-                  ) : (
-                    <div className="w-8 h-8 flex items-center justify-center bg-gray-100 rounded">
-                      <FileText className="w-5 h-5 text-gray-500" />
-                    </div>
-                  )}
+  {/* Files */}
+  {filteredFiles.map((file) => (
+    <div
+      key={file.id}
+      className={`sm:grid sm:grid-cols-12 gap-4 p-4 border-b border-gray-3 hover:bg-gray-1 duration-200 cursor-pointer flex flex-col sm:flex-row ${
+        selectedFiles.includes(file.id) ? "bg-blue/5" : ""
+      }`}
+    >
+      <div className="sm:col-span-1">
+        <input
+          type="checkbox"
+          checked={selectedFiles.includes(file.id)}
+          onChange={() => onFileSelect(file.id)}
+          className="rounded mb-2 sm:mb-0"
+        />
+      </div>
 
-                  <span className="font-medium text-dark truncate">
-                    {file.name}
-                  </span>
-                </div>
-                <div className="col-span-2 text-dark-4 text-sm">
-                  {formatFileSize(file.size)}
-                </div>
-                <div className="col-span-2 text-dark-4 text-sm">
-                  {file.uploadDate.toLocaleDateString()}
-                </div>
-                <div className="col-span-2 flex items-center gap-2">
-                  <button
-                    className="p-1 text-gray-600 hover:bg-gray-100 rounded"
-                    title="Preview"
-                    onClick={(e) => handlePreviewClick(file.id, e)}
-                  >
-                    <Eye className="w-4 h-4" />
-                  </button>
-                  <button
-                    className="p-1 text-green-500 hover:bg-green-50 rounded"
-                    title="Download"
-                    onClick={(e) => handleDownloadClick(file, e)}
-                  >
-                    <Download className="w-4 h-4" />
-                  </button>
-                  <button
-                    className="p-1 text-red-500 hover:bg-red-50 rounded"
-                    title="Delete"
-                    onClick={(e) => handleDeleteClick(file.id, e)}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            ))}
+      <div className="sm:col-span-5 flex items-center gap-3">
+        {file.type.startsWith("image/") ? (
+          <img
+            src={file.path}
+            alt={file.name}
+            className="w-12 h-12 object-cover rounded flex-shrink-0"
+          />
+        ) : file.type.startsWith("video/") ? (
+          <video
+            src={file.path}
+            className="w-12 h-12 rounded flex-shrink-0 object-cover"
+            muted
+            loop
+            playsInline
+          />
+        ) : file.type.includes("pdf") ? (
+          <iframe
+            src={`https://docs.google.com/gview?url=${encodeURIComponent(file.path)}&embedded=true`}
+            className="w-12 h-12 rounded mb-3"
+            title={file.name}
+          />
+        ) : (
+          <div className="w-8 h-8 flex items-center justify-center bg-gray-100 rounded">
+            <FileText className="w-5 h-5 text-gray-500" />
           </div>
+        )}
+
+        <span className="font-medium text-dark truncate">{file.name}</span>
+      </div>
+
+      <div className="sm:col-span-2 text-dark-4 text-sm">
+        {formatFileSize(file.size)}
+      </div>
+      <div className="sm:col-span-2 text-dark-4 text-sm">
+        {file.uploadDate.toLocaleDateString()}
+      </div>
+      <div className="sm:col-span-2 flex items-center gap-2">
+        <button
+          className="p-1 text-gray-600 hover:bg-gray-100 rounded"
+          title="Preview"
+          onClick={(e) => handlePreviewClick(file.id, e)}
+        >
+          <Eye className="w-4 h-4" />
+        </button>
+        <button
+          className="p-1 text-green-500 hover:bg-green-50 rounded"
+          title="Download"
+          onClick={(e) => handleDownloadClick(file, e)}
+        >
+          <Download className="w-4 h-4" />
+        </button>
+        <button
+          className="p-1 text-red-500 hover:bg-red-50 rounded"
+          title="Delete"
+          onClick={(e) => handleDeleteClick(file.id, e)}
+        >
+          <Trash2 className="w-4 h-4" />
+        </button>
+      </div>
+    </div>
+  ))}
+</div>
+
         )}
 
         {/* Empty State */}
