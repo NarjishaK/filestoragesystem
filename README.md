@@ -1,7 +1,11 @@
-```markdown
-# 📁 FileStorage  System
 
- file storage frontend application built with **Next.js**, **TypeScript/JavaScript**, **Tailwind CSS**, and integrated with a **Node.js + MongoDB** backend using **REST APIs** and **JWT authentication**.
+---
+
+```markdown
+# 📁 FileStorage System
+
+A secure, responsive file storage frontend application built with **Next.js**, **JavaScript/TypeScript**, and **Tailwind CSS**.  
+It connects to a **Node.js + MongoDB** backend via **REST APIs** and uses **JWT** for authentication.
 
 ---
 
@@ -18,7 +22,10 @@
 
 ---
 
-## 📁 Project Structure
+## 🧱 Project Structure
+
+<details>
+<summary>Click to expand folder structure</summary>
 
 ```
 
@@ -29,31 +36,34 @@ src/
 │
 ├── components/          # Reusable UI components
 │   ├── Auth/            # Signin / Signup Components
-│   ├── Common/          # Breadcrumbs.
+│   ├── Common/          # Breadcrumbs, Loaders, etc.
 │   ├── Footer/
 │   ├── Header/
 │   ├── Home/
 │   ├── MainPage/
 │   └── MyAccount/
 │
-├── app/                
+├── app/                 # Next.js 13+ App Directory
 │   ├── (site)/          # Main app routes
 │   ├── css/             # Global styles
 │   └── favicon.ico
 
 ````
 
+</details>
+
 ---
 
 ## 📦 Getting Started
 
-### 1. **Clone the Repository**
+### 1. Clone the Repository
+
 ```bash
 git clone https://github.com/NarjishaK/filestoragesystem.git
-cd filestoragesystem 
+cd filestoragesystem
 ````
 
-### 2. **Install Dependencies**
+### 2. Install Dependencies
 
 ```bash
 npm install
@@ -61,15 +71,15 @@ npm install
 yarn install
 ```
 
-### 3. **Environment Variables**
+### 3. Create Environment Variables
 
-Create a `.env` file in the root directory and add your API configuration:
+Create a `.env` file in the root directory:
 
 ```env
 NEXT_PUBLIC_BASE_URL=http://localhost:5000
 ```
 
-### 4. **Run the Development Server**
+### 4. Run the Development Server
 
 ```bash
 npm run dev
@@ -77,53 +87,81 @@ npm run dev
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit: [http://localhost:3000](http://localhost:3000)
 
 ---
 
 ## 🛠 Features
 
-- 🔐 **Authentication & Security**
-  - User Sign Up with email verification
-  - Login & Secure session handling
-  - Forgot Password with OTP-based verification
+### 🔐 Authentication & Security
 
-- 📦 **File Management**
-  - Upload **multiple file types** (images, PDFs, docs, videos, etc.)
-  - Organize files in **folders**
-  - **Preview** files (images, videos, PDFs)
-  - **Download** and **Delete** files securely
-  - Filter files by **type**
+* Sign Up with Email Verification (via email link)
+* Secure Login with JWT Token
+* Forgot Password with OTP Email Verification
 
-- 📃 **File Display**
-  - List view of all uploaded files
-  - Show file name, size, upload time
-  - Show type-based icons and preview modals
-  - My Account Management
+### 📁 File Management
+
+* Upload **multiple files** (images, PDFs, docs, videos, etc.)
+* Organize files using **folders**
+* **Preview**, **Download**, and **Delete** files
+* Filter files by **type**
+
+### 📃 File Display
+
+* See a list of all uploaded files
+* View file metadata: name, type, size, upload time
+* Type-based icons & preview modals
+* My Account & Profile Management
 
 ---
 
 ## 🔐 Authentication Flow
 
-* User signs in via `/signin`
-* JWT is saved in localStorage
-* Protected pages verify token before granting access
-* Auto redirect to `/signin` if token is missing/invalid
+```text
+1. User signs in via /signin
+2. JWT is stored in localStorage
+3. Protected routes validate JWT on access
+4. If JWT is missing/invalid → redirect to /signin
+```
 
 ---
 
-## 📁 API Integration
+## 🌐 API Integration
 
-All API calls are centralized inside:
+All REST API interactions are centralized in:
 
-```
+```bash
 src/Helper/handleapi.js
 ```
 
 ---
 
-## ✨ Credits
+## 🙌 Credits
 
-Built with by \[Narjisha]
+Built with ❤️ by [Narjisha](https://github.com/NarjishaK)
+
 ---
-```
+
+## 📄 License
+
+This project is licensed under the **MIT License**.
+
+````
+
+---
+
+### ✅ Bonus Tips:
+- Add a **preview GIF** or **screenshots** section using:
+  ```markdown
+  ## 📸 Preview
+
+  ![App Preview](./public/preview.gif)
+````
+
+* Add **badges** (optional):
+
+  ```markdown
+  ![Next.js](https://img.shields.io/badge/Next.js-000?logo=nextdotjs&logoColor=white)
+  ![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-06B6D4?logo=tailwindcss&logoColor=white)
+  ```
+
