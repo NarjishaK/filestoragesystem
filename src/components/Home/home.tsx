@@ -6,57 +6,21 @@ export interface UploadedFile {
   type: string;
   uploadDate: Date;
   folderId?: string;
-  url: string; // For preview/download
-}
-export interface Folder {
-  id: string;
-  name: string;
-  createdAt: Date;
-  parentId?: string;
+  path: string;
+  filename?: string;
 }
 export type FileType = "all" | "images" | "documents" | "videos" | "others";
 import React, { useState, useRef } from "react";
-import { Upload, FolderPlus, Folder, X, Grid, List } from "lucide-react";
+import { Upload, FolderPlus, X, Grid, List } from "lucide-react";
 import FilterComponent from "./filterpage";
 import BreadcrumbComponent from "../Common/Breadcrumb";
 import ContentArea from "./content";
-
-// Mock data - Replace with your actual API calls
-const mockFiles: UploadedFile[] = [
-  {
-    id: "1",
-    name: "project-proposal.pdf",
-    size: 2458632,
-    type: "application/pdf",
-    uploadDate: new Date("2024-01-15"),
-    url: "/mock/project-proposal.pdf",
-  },
-  {
-    id: "2",
-    name: "banner-image.jpg",
-    size: 1024000,
-    type: "image/jpeg",
-    uploadDate: new Date("2024-01-14"),
-    url: "/mock/banner-image.jpg",
-  },
-];
-
-const mockFolders: Folder[] = [
-  {
-    id: "1",
-    name: "Documents",
-    createdAt: new Date("2024-01-10"),
-  },
-  {
-    id: "2",
-    name: "Images",
-    createdAt: new Date("2024-01-10"),
-  },
-];
+import { fetchFiles } from "@/Helper/handleapi";
+import { useEffect } from "react"; // Make sure it's imported
 
 const FileUploadManager: React.FC = () => {
-  const [files, setFiles] = useState<UploadedFile[]>(mockFiles);
-  const [folders, setFolders] = useState<Folder[]>(mockFolders);
+  const [files, setFiles] = useState([]);
+  const [folders, setFolders] = useState([]);
   const [currentFolder, setCurrentFolder] = useState<string | null>(null);
   const [selectedFiles, setSelectedFiles] = useState<string[]>([]);
   const [fileFilter, setFileFilter] = useState<FileType>("all");
@@ -67,6 +31,45 @@ const FileUploadManager: React.FC = () => {
   const [newFolderName, setNewFolderName] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const folderInputRef = useRef<HTMLInputElement>(null);
+  //fetch files
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const data = await fetchFiles();
+        const mappedFiles: UploadedFile[] = data.map((file: any) => ({
+          id: file._id,
+          name: file.originalname,
+          size: file.size,
+          type: file.mimetype,
+          uploadDate: new Date(file.uploadedAt),
+          folderId: file.folder !== "root" ? file.folder : undefined,
+          path: file.path,
+          filename: file.filename,
+        }));
+
+        setFiles(mappedFiles);
+
+        // Dynamically generate unique folders
+        const uniqueFolders = Array.from(
+          new Set(
+            mappedFiles
+              .map((file) => file.folderId)
+              .filter((folder) => folder && folder !== "root")
+          )
+        ).map((folderName) => ({
+          id: folderName!,
+          name: folderName!,
+          createdAt: new Date(),
+        }));
+
+        setFolders(uniqueFolders);
+      } catch (err) {
+        console.error("Failed to fetch files", err);
+      }
+    };
+
+    getData();
+  }, []);
 
   // File type detection
   const getFileType = (mimeType: string): FileType => {
@@ -92,15 +95,15 @@ const FileUploadManager: React.FC = () => {
       .includes(searchTerm.toLowerCase());
     return matchesFolder && matchesFilter && matchesSearch;
   });
-
+  // Filter folders
   const filteredFolders = folders.filter((folder) => {
-    const matchesParent = currentFolder
-      ? folder.parentId === currentFolder
-      : !folder.parentId;
+    const isRoot = currentFolder === null || currentFolder === "root";
+    const isNotRoot = folder.id !== "root";
     const matchesSearch = folder.name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
-    return matchesParent && matchesSearch;
+    // Only show subfolders in root view
+    return isRoot && isNotRoot && matchesSearch;
   });
 
   // search

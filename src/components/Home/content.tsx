@@ -9,6 +9,7 @@ import {
   Eye,
   Folder,
 } from "lucide-react";
+import { BASE_URL } from "@/Helper/handleapi";
 
 export interface UploadedFile {
   id: string;
@@ -18,19 +19,14 @@ export interface UploadedFile {
   uploadDate: Date;
   folderId?: string;
   url: string;
-}
-
-export interface Folder {
-  id: string;
-  name: string;
+  path: string;
+  filename?: string;
   createdAt: Date;
-  parentId?: string;
 }
-
 interface ContentAreaProps {
   viewMode: "grid" | "list";
   filteredFiles: UploadedFile[];
-  filteredFolders: Folder[];
+  filteredFolders: UploadedFile[];
   selectedFiles: string[];
   onFileSelect: (fileId: string) => void;
   onFolderNavigate: (folderId: string) => void;
@@ -103,9 +99,9 @@ const ContentArea: React.FC<ContentAreaProps> = ({
               onClick={() => onFileSelect(file.id)}
             >
               <div className="flex flex-col items-center text-center">
-                {file.type.startsWith("image/") ? (
+                {file.type.startsWith(`${BASE_URL}/`) ? (
                   <img
-                    src={file.url}
+                    src={`${file.path}`}
                     alt={file.name}
                     className="w-12 h-12 object-cover rounded mb-3"
                   />
@@ -218,9 +214,9 @@ const ContentArea: React.FC<ContentAreaProps> = ({
                 />
               </div>
               <div className="col-span-5 flex items-center gap-3">
-                {file.type.startsWith("image/") ? (
+                {file.type.startsWith(`${BASE_URL}/`) ? (
                   <img
-                    src={file.url}
+                    src={file.path}
                     alt={file.name}
                     className="w-8 h-8 object-cover rounded flex-shrink-0"
                   />
@@ -268,11 +264,10 @@ const ContentArea: React.FC<ContentAreaProps> = ({
       {filteredFiles.length === 0 && filteredFolders.length === 0 && (
         <div className="text-center py-12">
           <File className="w-16 h-16 text-dark-4 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-dark mb-2">
-            No files found
-          </h3>
+          <h3 className="text-lg font-medium text-dark mb-2">No files found</h3>
           <p className="text-dark-4">
-            Try adjusting your search or filter, or upload your first file to get started
+            Try adjusting your search or filter, or upload your first file to
+            get started
           </p>
         </div>
       )}

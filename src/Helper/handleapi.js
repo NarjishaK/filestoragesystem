@@ -12,9 +12,9 @@ export const Customersignup = async (data) => {
     const response = await axios.post(`${BASE_URL}/customer`, data);
     return response.data;
 }
-//fetch logo
-export const fetchLogo = async () => {
-    const response = await axios.get(`${BASE_URL}/logo`);
-    return response.data;
-}
+//fetch all files
+export const fetchFiles = async () => {
+  const response = await axios.get(`${BASE_URL}/filestorage`);
+  return response.data;
+};
 
