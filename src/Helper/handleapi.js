@@ -2,6 +2,19 @@ import axios from "axios";
 import Swal from "sweetalert2";
 export const BASE_URL = "http://localhost:3001";
 
+
+//upload file
+export const uploadFile = async (data) => {
+   try {
+    const response = await axios.post(`${BASE_URL}/filestorage`, data);
+    Swal.fire("Success", "File uploaded successfully", "success");
+    return response.data;
+  } catch (error) {
+    Swal.fire("Error", "Failed to upload file", "error");
+    console.error(error);
+  }
+};
+
 //signin
 export const loginCustomer = async (admin) => {
   const response = await axios.post(`${BASE_URL}/customer/login`, admin);

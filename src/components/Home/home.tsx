@@ -15,8 +15,8 @@ import { Upload, FolderPlus, X, Grid, List } from "lucide-react";
 import FilterComponent from "./filterpage";
 import BreadcrumbComponent from "../Common/Breadcrumb";
 import ContentArea from "./content";
-import { fetchFiles } from "@/Helper/handleapi";
-import { useEffect } from "react"; // Make sure it's imported
+import { fetchFiles, uploadFile } from "@/Helper/handleapi";
+import { useEffect } from "react";
 
 const FileUploadManager: React.FC = () => {
   const [files, setFiles] = useState([]);
@@ -30,6 +30,7 @@ const FileUploadManager: React.FC = () => {
   const [showNewFolderModal, setShowNewFolderModal] = useState(false);
   const [newFolderName, setNewFolderName] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+
   //fetch files
   useEffect(() => {
     const getData = async () => {
@@ -175,6 +176,38 @@ const FileUploadManager: React.FC = () => {
       console.error("Failed to load files", err);
     }
   };
+  //handle file uploads
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const formData = new FormData();
+    Array.from(files).forEach((file) => {
+      formData.append("files", file);
+    });
+    formData.append("folder", currentFolder || "root");
+
+    setIsUploading(true);
+    await uploadFile(formData);
+    setIsUploading(false);
+    loadFiles();
+  };
+  // drag the files for upload
+  const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const files = e.dataTransfer.files;
+    if (!files || files.length === 0) return;
+
+    const formData = new FormData();
+    Array.from(files).forEach((file) => {
+      formData.append("files", file);
+    });
+    formData.append("folder", currentFolder || "root");
+    setIsUploading(true);
+    await uploadFile(formData);
+    setIsUploading(false);
+    loadFiles();
+  };
 
   return (
     <div className="w-full max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-2 border border-gray-3">
@@ -200,6 +233,14 @@ const FileUploadManager: React.FC = () => {
             <Upload className="w-4 h-4" />
             {isUploading ? "Uploading..." : "Upload Files"}
           </button>
+
+          <input
+            type="file"
+            multiple
+            ref={fileInputRef}
+            onChange={handleFileUpload}
+            className="hidden"
+          />
         </div>
       </div>
 
@@ -246,13 +287,19 @@ const FileUploadManager: React.FC = () => {
         className="mb-4 p-3 bg-gray-1 rounded-lg"
       />
       {/* Drop Zone */}
-      <div className="border-2 border-dashed border-gray-3 rounded-lg p-8 mb-6 text-center hover:border-blue/50 hover:bg-blue/5 duration-200">
-        <Upload className="w-12 h-12 text-dark-4 mx-auto mb-4" />
-        <p className="text-dark-3 mb-2">
-          Drag and drop files here or click to browse
-        </p>
-        <p className="text-dark-4 text-sm">Supports all file types</p>
-      </div>
+      <label htmlFor="drop-upload">
+        <div
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={handleDrop}
+          className="cursor-pointer border-2 border-dashed border-gray-3 rounded-lg p-8 mb-6 text-center hover:border-blue/50 hover:bg-blue/5 duration-200"
+        >
+          <Upload className="w-12 h-12 text-dark-4 mx-auto mb-4" />
+          <p className="text-dark-3 mb-2">
+            Drag and drop files here or click to browse
+          </p>
+          <p className="text-dark-4 text-sm">Supports all file types</p>
+        </div>
+      </label>
       {/* Content Area */}
       <ContentArea
         viewMode={viewMode}
