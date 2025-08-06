@@ -30,7 +30,8 @@ const FileUploadManager: React.FC = () => {
   const [showNewFolderModal, setShowNewFolderModal] = useState(false);
   const [newFolderName, setNewFolderName] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
-
+  const [modalFiles, setModalFiles] = useState<File[]>([]);
+  const modalFileInputRef = useRef<HTMLInputElement>(null);
   //fetch files
   useEffect(() => {
     const getData = async () => {
@@ -209,6 +210,44 @@ const FileUploadManager: React.FC = () => {
     loadFiles();
   };
 
+  // handler function for modal file selection
+  const handleModalFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      setModalFiles(Array.from(files));
+    }
+  };
+
+  // Add this handler for creating folder with files
+  const handleCreateFolderWithFiles = async () => {
+    if (!newFolderName.trim()) {
+      return;
+    }
+    try {
+      setIsUploading(true);
+      if (modalFiles.length > 0) {
+        const formData = new FormData();
+        modalFiles.forEach((file) => {
+          formData.append("files", file);
+        });
+        formData.append("folder", newFolderName.trim());
+        await uploadFile(formData);
+      }
+      // Reset modal state
+      setShowNewFolderModal(false);
+      setNewFolderName("");
+      setModalFiles([]);
+      if (modalFileInputRef.current) {
+        modalFileInputRef.current.value = "";
+      }
+      await loadFiles();
+    } catch (error) {
+      console.error("Failed to create folder with files:", error);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   return (
     <div className="w-full max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-2 border border-gray-3">
       {/* Header */}
@@ -323,43 +362,75 @@ const FileUploadManager: React.FC = () => {
                 onClick={() => {
                   setShowNewFolderModal(false);
                   setNewFolderName("");
+                  setModalFiles([]);
+                  if (modalFileInputRef.current) {
+                    modalFileInputRef.current.value = "";
+                  }
                 }}
                 className="p-1 text-dark-4 hover:text-dark hover:bg-gray-1 rounded"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
+
             <div className="p-4">
               <input
                 type="text"
                 placeholder="Folder name"
+                value={newFolderName}
+                onChange={(e) => setNewFolderName(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-3 rounded-md focus:border-blue focus:ring-2 focus:ring-blue/20 focus:outline-none"
                 autoFocus
               />
             </div>
+
             <div className="p-4">
               <input
                 type="file"
                 multiple
-                ref={fileInputRef}
+                ref={modalFileInputRef}
+                onChange={handleModalFileChange}
                 className="w-full px-4 py-2 border border-gray-3 rounded-md focus:border-blue focus:ring-2 focus:ring-blue/20 focus:outline-none"
               />
             </div>
+
+            {/* Show selected files */}
+            {modalFiles.length > 0 && (
+              <div className="p-4 pt-0">
+                <p className="text-sm text-dark-4 mb-2">
+                  Selected files: {modalFiles.length}
+                </p>
+                <div className="max-h-32 overflow-y-auto">
+                  {modalFiles.map((file, index) => (
+                    <div key={index} className="text-xs text-dark-4 truncate">
+                      {file.name}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="flex items-center justify-end gap-3 p-4 border-t border-gray-3">
               <button
                 onClick={() => {
                   setShowNewFolderModal(false);
                   setNewFolderName("");
+                  setModalFiles([]);
+                  if (modalFileInputRef.current) {
+                    modalFileInputRef.current.value = "";
+                  }
                 }}
                 className="px-4 py-2 text-dark-4 hover:bg-gray-1 rounded-md duration-200"
+                disabled={isUploading}
               >
                 Cancel
               </button>
               <button
-                disabled={!newFolderName.trim()}
+                onClick={handleCreateFolderWithFiles}
+                disabled={!newFolderName.trim() || isUploading}
                 className="px-4 py-2 bg-blue text-white rounded-md hover:bg-blue/90 duration-200 disabled:opacity-50"
               >
-                Create
+                {isUploading ? "Creating..." : "Create"}
               </button>
             </div>
           </div>
