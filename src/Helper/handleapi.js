@@ -6,7 +6,12 @@ export const BASE_URL = "http://localhost:3001";
 //upload file
 export const uploadFile = async (data) => {
    try {
-    const response = await axios.post(`${BASE_URL}/filestorage`, data);
+    const token = localStorage.getItem("token");
+    const response = await axios.post(`${BASE_URL}/filestorage`, data,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     Swal.fire("Success", "File uploaded successfully", "success");
     return response.data;
   } catch (error) {
@@ -31,8 +36,12 @@ export const Customersignup = async (data) => {
 export const fetchFiles = async () => {
   const customerDetails = JSON.parse(localStorage.getItem("customerDetails"));
   const customerId = customerDetails?._id;
+  const token = localStorage.getItem("token");
   const response = await axios.get(`${BASE_URL}/filestorage`, {
     params: { customerId },
+    headers: {
+      Authorization: `Bearer ${token}`,
+    }
   });
   return response.data;
 };
@@ -51,7 +60,12 @@ export const deleteFile = async (id, onSuccess) => {
 
   if (confirm.isConfirmed) {
     try {
-      const response = await axios.delete(`${BASE_URL}/filestorage/${id}`);
+        const token = localStorage.getItem("token");
+      const response = await axios.delete(`${BASE_URL}/filestorage/${id}`,{
+         headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       Swal.fire("Deleted!", "The file has been deleted.", "success");
       if (onSuccess) {
