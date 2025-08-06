@@ -1,13 +1,6 @@
 import React, { useState } from "react";
-import { deleteFile, getFileById } from "@/Helper/handleapi";
-import {
-  File,
-  FileText,
-  Download,
-  Trash2,
-  Eye,
-  Folder,
-} from "lucide-react";
+import { deleteFile } from "@/Helper/handleapi";
+import { File, FileText, Download, Trash2, Eye, Folder } from "lucide-react";
 import FileModal from "./fileModal"; // Import the modal component
 
 export interface UploadedFile {
@@ -55,13 +48,13 @@ const ContentArea: React.FC<ContentAreaProps> = ({
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   };
-// File preview
+  // File preview
   const handlePreviewClick = (fileId: string, event: React.MouseEvent) => {
     event.stopPropagation(); // Prevent triggering file selection
     setSelectedFileId(fileId);
     setIsModalOpen(true);
   };
-// File download
+  // File download
   const handleDownloadClick = (file: UploadedFile, event: React.MouseEvent) => {
     event.stopPropagation();
     const link = document.createElement("a");
@@ -117,12 +110,12 @@ const ContentArea: React.FC<ContentAreaProps> = ({
                     <img
                       src={file.path}
                       alt={file.name}
-                      className="w-8 h-8 object-cover rounded flex-shrink-0"
+                      className="h-8 object-cover rounded flex-shrink-0"
                     />
                   ) : file.type.startsWith("video/") ? (
                     <video
                       src={file.path}
-                      className="w-8 h-8 rounded flex-shrink-0 object-cover"
+                      className="h-8 rounded flex-shrink-0 object-cover"
                       muted
                       loop
                       playsInline
@@ -136,7 +129,7 @@ const ContentArea: React.FC<ContentAreaProps> = ({
                       title={file.name}
                     />
                   ) : (
-                    <div className="w-8 h-8 flex items-center justify-center bg-gray-100 rounded">
+                    <div className=" h-8 flex items-center justify-center bg-gray-100 rounded">
                       <FileText className="w-5 h-5 text-gray-500" />
                     </div>
                   )}
@@ -242,12 +235,12 @@ const ContentArea: React.FC<ContentAreaProps> = ({
                     <img
                       src={file.path}
                       alt={file.name}
-                      className="w-8 h-8 object-cover rounded flex-shrink-0"
+                      className="w-12 h-12 object-cover rounded flex-shrink-0"
                     />
                   ) : file.type.startsWith("video/") ? (
                     <video
                       src={file.path}
-                      className="w-8 h-8 rounded flex-shrink-0 object-cover"
+                      className="w-12 h-12 rounded flex-shrink-0 object-cover"
                       muted
                       loop
                       playsInline
@@ -308,7 +301,9 @@ const ContentArea: React.FC<ContentAreaProps> = ({
         {filteredFiles.length === 0 && filteredFolders.length === 0 && (
           <div className="text-center py-12">
             <File className="w-16 h-16 text-dark-4 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-dark mb-2">No files found</h3>
+            <h3 className="text-lg font-medium text-dark mb-2">
+              No files found
+            </h3>
             <p className="text-dark-4">
               Try adjusting your search or filter, or upload your first file to
               get started

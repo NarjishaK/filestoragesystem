@@ -48,7 +48,7 @@ const FileModal: React.FC<FileModalProps> = ({
       document.body.removeChild(link);
     }
   };
-//
+//get file type
   const getFileType = (file: any) => {
     if (file.type && file.type.trim() !== "") {
       return file.type;
@@ -157,9 +157,6 @@ const FileModal: React.FC<FileModalProps> = ({
           )}
 
           <div className="text-center space-y-2">
-            <h3 className="font-medium text-gray-900 text-lg break-words">
-              {file.name || "Unknown file"}
-            </h3>
             <p className="text-sm text-gray-500">
               {file.size ? formatFileSize(file.size) : "Unknown size"} • {fileType}
             </p>
@@ -193,7 +190,7 @@ const FileModal: React.FC<FileModalProps> = ({
       {/* Modal */}
       <div className="relative bg-white rounded-lg shadow-xl max-w-4xl max-h-[90vh] w-full mx-4 flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200">
+        <div className="flex items-center justify-between border-b border-gray-200" style={{ padding: "1rem" }}>
           <div className="flex-1 min-w-0">
             <h2 className="text-lg font-semibold text-gray-900 truncate">
               {loading ? "Loading..." : file?.name || "File Preview"}
