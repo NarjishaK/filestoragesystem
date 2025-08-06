@@ -15,7 +15,7 @@ const MainPage = () => {
   }
 
   return isAuthenticated ? (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50" style={{paddingTop:"7rem"}}>
       <Home />
     </div>
   ) : (

@@ -106,7 +106,7 @@ const Signin = () => {
 
   return (
     <>
-     <div className="min-h-screen bg-gray-50 py-8">
+     <div className="min-h-screen bg-gray-50" style={{paddingTop:"7rem"}}>
 
       <section className="overflow-hidden py-20 bg-gray-2">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
