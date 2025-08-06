@@ -32,6 +32,12 @@ const FileUploadManager: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [modalFiles, setModalFiles] = useState<File[]>([]);
   const modalFileInputRef = useRef<HTMLInputElement>(null);
+
+//get customerDetails from localstorage
+
+const  customerDetails = JSON.parse(localStorage.getItem("customerDetails")!);
+ console.log("customerDetails:", customerDetails);
+
   //fetch files
   useEffect(() => {
     const getData = async () => {
@@ -167,36 +173,40 @@ const FileUploadManager: React.FC = () => {
   };
   //handle file uploads
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files || files.length === 0) return;
+  const files = e.target.files;
+  if (!files || files.length === 0) return;
 
-    const formData = new FormData();
-    Array.from(files).forEach((file) => {
-      formData.append("files", file);
-    });
-    formData.append("folder", currentFolder || "root");
+  const formData = new FormData();
+  Array.from(files).forEach((file) => {
+    formData.append("files", file);
+  });
+  formData.append("folder", currentFolder || "root");
+  const customerDetails = JSON.parse(localStorage.getItem("customerDetails")!);
+  formData.append("customerId", customerDetails?._id);
 
-    setIsUploading(true);
-    await uploadFile(formData);
-    setIsUploading(false);
-    loadFiles();
+  setIsUploading(true);
+  await uploadFile(formData);
+  setIsUploading(false);
+  loadFiles();
   };
+
   // drag the files for upload
-  const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    const files = e.dataTransfer.files;
-    if (!files || files.length === 0) return;
-
-    const formData = new FormData();
-    Array.from(files).forEach((file) => {
-      formData.append("files", file);
-    });
-    formData.append("folder", currentFolder || "root");
-    setIsUploading(true);
-    await uploadFile(formData);
-    setIsUploading(false);
-    loadFiles();
-  };
+ const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
+  e.preventDefault();
+  const files = e.dataTransfer.files;
+  if (!files || files.length === 0) return;
+  const formData = new FormData();
+  Array.from(files).forEach((file) => {
+    formData.append("files", file);
+  });
+  formData.append("folder", currentFolder || "root");
+  const customerDetails = JSON.parse(localStorage.getItem("customerDetails")!);
+  formData.append("customerId", customerDetails?._id);
+  setIsUploading(true);
+  await uploadFile(formData);
+  setIsUploading(false);
+  loadFiles();
+};
 
   // handler function for modal file selection
   const handleModalFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -219,8 +229,13 @@ const FileUploadManager: React.FC = () => {
           formData.append("files", file);
         });
         formData.append("folder", newFolderName.trim());
+        const customerDetails = JSON.parse(
+          localStorage.getItem("customerDetails")!
+        );
+        formData.append("customerId", customerDetails?._id);
         await uploadFile(formData);
       }
+
       // Reset modal state
       setShowNewFolderModal(false);
       setNewFolderName("");

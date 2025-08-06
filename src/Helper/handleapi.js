@@ -29,7 +29,11 @@ export const Customersignup = async (data) => {
 
 //fetch all files
 export const fetchFiles = async () => {
-  const response = await axios.get(`${BASE_URL}/filestorage`);
+  const customerDetails = JSON.parse(localStorage.getItem("customerDetails"));
+  const customerId = customerDetails?._id;
+  const response = await axios.get(`${BASE_URL}/filestorage`, {
+    params: { customerId },
+  });
   return response.data;
 };
 
