@@ -9,10 +9,10 @@
 # testing
 /coverage
 # next.js
-/.next/
+# /.next/
 /out/
 .env
-/build
+# /build
 .DS_Store
 *.pem
 
