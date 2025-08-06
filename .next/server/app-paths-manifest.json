@@ -2,11 +2,11 @@
   "/_not-found/page": "app/_not-found/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
   "/(site)/(pages)/signin/page": "app/(site)/(pages)/signin/page.js",
-  "/(site)/(pages)/verification/page": "app/(site)/(pages)/verification/page.js",
+  "/(site)/(pages)/my-account/page": "app/(site)/(pages)/my-account/page.js",
   "/(site)/(pages)/forgetpassword/page": "app/(site)/(pages)/forgetpassword/page.js",
+  "/(site)/(pages)/verification/page": "app/(site)/(pages)/verification/page.js",
   "/(site)/(pages)/signup/page": "app/(site)/(pages)/signup/page.js",
   "/(site)/(pages)/verifyemail/page": "app/(site)/(pages)/verifyemail/page.js",
   "/(site)/home/page": "app/(site)/home/page.js",
-  "/(site)/(pages)/my-account/page": "app/(site)/(pages)/my-account/page.js",
   "/(site)/page": "app/(site)/page.js"
 }

@@ -2,11 +2,11 @@
   "/_not-found/page": "/_not-found",
   "/favicon.ico/route": "/favicon.ico",
   "/(site)/(pages)/signin/page": "/signin",
-  "/(site)/(pages)/verification/page": "/verification",
+  "/(site)/(pages)/my-account/page": "/my-account",
   "/(site)/(pages)/forgetpassword/page": "/forgetpassword",
+  "/(site)/(pages)/verification/page": "/verification",
   "/(site)/(pages)/signup/page": "/signup",
   "/(site)/(pages)/verifyemail/page": "/verifyemail",
   "/(site)/home/page": "/home",
-  "/(site)/(pages)/my-account/page": "/my-account",
   "/(site)/page": "/"
 }
