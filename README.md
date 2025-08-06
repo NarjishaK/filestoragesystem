@@ -11,50 +11,16 @@ It connects to a **Node.js + MongoDB** backend via **REST APIs** and uses **JWT*
 
 ## 🚀 Tech Stack
 
-- **Framework**: [Next.js](https://nextjs.org/)
-- **Language**: TypeScript / JavaScript
-- **Styling**: Tailwind CSS, CSS Modules
-- **API**: REST API
-- **Authentication**: JWT (JSON Web Tokens)
-- **State Management**: React Hooks & Context API
-- **Backend**: Node.js (handled separately)
-- **Database**: MongoDB
+- Framework: [Next.js](https://nextjs.org/)
+- Language: TypeScript / JavaScript
+- Styling: Tailwind CSS, CSS Modules
+- API: REST API
+- Authentication: JWT (JSON Web Tokens)
+- State Management: React Hooks & Context API
+- Backend: Node.js (handled separately)
+- Database: MongoDB
 
 ---
-
-## 🧱 Project Structure
-
-<details>
-<summary>Click to expand folder structure</summary>
-
-```
-
-src/
-├── Helper/              # API handlers and utility hooks
-│   ├── handleapi.js
-│   └── useForm.js
-│
-├── components/          # Reusable UI components
-│   ├── Auth/            # Signin / Signup Components
-│   ├── Common/          # Breadcrumbs, Loaders, etc.
-│   ├── Footer/
-│   ├── Header/
-│   ├── Home/
-│   ├── MainPage/
-│   └── MyAccount/
-│
-├── app/                 # Next.js 13+ App Directory
-│   ├── (site)/          # Main app routes
-│   ├── css/             # Global styles
-│   └── favicon.ico
-
-````
-
-</details>
-
----
-
-## 📦 Getting Started
 
 ### 1. Clone the Repository
 
@@ -110,7 +76,7 @@ Visit: [http://localhost:3000](http://localhost:3000)
 
 * See a list of all uploaded files
 * View file metadata: name, type, size, upload time
-* Type-based icons & preview modals
+* Preview modals
 * My Account & Profile Management
 
 ---
@@ -126,7 +92,7 @@ Visit: [http://localhost:3000](http://localhost:3000)
 
 ---
 
-## 🌐 API Integration
+##  API Integration
 
 All REST API interactions are centralized in:
 
@@ -135,33 +101,3 @@ src/Helper/handleapi.js
 ```
 
 ---
-
-## 🙌 Credits
-
-Built with ❤️ by [Narjisha](https://github.com/NarjishaK)
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License**.
-
-````
-
----
-
-### ✅ Bonus Tips:
-- Add a **preview GIF** or **screenshots** section using:
-  ```markdown
-  ## 📸 Preview
-
-  ![App Preview](./public/preview.gif)
-````
-
-* Add **badges** (optional):
-
-  ```markdown
-  ![Next.js](https://img.shields.io/badge/Next.js-000?logo=nextdotjs&logoColor=white)
-  ![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-06B6D4?logo=tailwindcss&logoColor=white)
-  ```
-
