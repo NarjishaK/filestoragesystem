@@ -143,6 +143,41 @@ const FileUploadManager: React.FC = () => {
     setCurrentFolder(folderId);
   };
 
+  //load files after delete
+  const loadFiles = async () => {
+    try {
+      const data = await fetchFiles();
+      const mappedFiles: UploadedFile[] = data.map((file: any) => ({
+        id: file._id,
+        name: file.originalname,
+        size: file.size,
+        type: file.mimetype,
+        uploadDate: new Date(file.uploadedAt),
+        folderId: file.folder !== "root" ? file.folder : undefined,
+        path: file.path,
+        filename: file.filename,
+      }));
+
+      setFiles(mappedFiles);
+
+      const uniqueFolders = Array.from(
+        new Set(
+          mappedFiles
+            .map((file) => file.folderId)
+            .filter((folder) => folder && folder !== "root")
+        )
+      ).map((folderName) => ({
+        id: folderName!,
+        name: folderName!,
+        createdAt: new Date(),
+      }));
+
+      setFolders(uniqueFolders);
+    } catch (err) {
+      console.error("Failed to load files", err);
+    }
+  };
+
   return (
     <div className="w-full max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-2 border border-gray-3">
       {/* Header */}
@@ -238,6 +273,7 @@ const FileUploadManager: React.FC = () => {
         onFileSelect={handleFileSelect}
         onFolderNavigate={handleFolderNavigate}
         onSelectAll={handleSelectAll}
+        onReloadFiles={loadFiles}
       />
       {/* New Folder Modal */}
       {showNewFolderModal && (

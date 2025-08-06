@@ -1,20 +1,50 @@
 import axios from "axios";
-export const BASE_URL ="http://localhost:3001";
+import Swal from "sweetalert2";
+export const BASE_URL = "http://localhost:3001";
 
 //signin
 export const loginCustomer = async (admin) => {
-    const response = await axios.post(`${BASE_URL}/customer/login`, admin);
-    return response.data;
+  const response = await axios.post(`${BASE_URL}/customer/login`, admin);
+  return response.data;
 };
 
 //signup
 export const Customersignup = async (data) => {
-    const response = await axios.post(`${BASE_URL}/customer`, data);
-    return response.data;
-}
+  const response = await axios.post(`${BASE_URL}/customer`, data);
+  return response.data;
+};
+
 //fetch all files
 export const fetchFiles = async () => {
   const response = await axios.get(`${BASE_URL}/filestorage`);
   return response.data;
 };
 
+//delete file by id
+export const deleteFile = async (id, onSuccess) => {
+  const confirm = await Swal.fire({
+    title: "Are you sure?",
+    text: "This file will be permanently deleted!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Yes, delete it!",
+  });
+
+  if (confirm.isConfirmed) {
+    try {
+      const response = await axios.delete(`${BASE_URL}/filestorage/${id}`);
+
+      Swal.fire("Deleted!", "The file has been deleted.", "success");
+      if (onSuccess) {
+        onSuccess(); 
+      }
+
+      return response.data;
+    } catch (error) {
+      Swal.fire("Error!", "Something went wrong while deleting.", "error");
+      console.error(error);
+    }
+  }
+};

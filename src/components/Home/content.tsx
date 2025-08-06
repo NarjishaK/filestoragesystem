@@ -1,15 +1,13 @@
 import React from "react";
+import { deleteFile } from "@/Helper/handleapi";
 import {
   File,
-  Image,
   FileText,
-  Video,
   Download,
   Trash2,
   Eye,
   Folder,
 } from "lucide-react";
-import { BASE_URL } from "@/Helper/handleapi";
 
 export interface UploadedFile {
   id: string;
@@ -23,11 +21,13 @@ export interface UploadedFile {
   filename?: string;
   createdAt: Date;
 }
+
 interface ContentAreaProps {
   viewMode: "grid" | "list";
   filteredFiles: UploadedFile[];
   filteredFolders: UploadedFile[];
   selectedFiles: string[];
+  onReloadFiles: () => void;
   onFileSelect: (fileId: string) => void;
   onFolderNavigate: (folderId: string) => void;
   onSelectAll: (checked: boolean) => void;
@@ -41,17 +41,8 @@ const ContentArea: React.FC<ContentAreaProps> = ({
   onFileSelect,
   onFolderNavigate,
   onSelectAll,
+  onReloadFiles,
 }) => {
-  // File type detection
-  const getFileIcon = (type: string) => {
-    if (type.startsWith("image/")) return <Image className="w-5 h-5" />;
-    if (type.startsWith("video/")) return <Video className="w-5 h-5" />;
-    if (type.includes("pdf") || type.includes("document"))
-      return <FileText className="w-5 h-5" />;
-    return <File className="w-5 h-5" />;
-  };
-
-  // Format file size
   const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return "0 Bytes";
     const k = 1024;
@@ -80,10 +71,6 @@ const ContentArea: React.FC<ContentAreaProps> = ({
                   {folder.createdAt.toLocaleDateString()}
                 </p>
               </div>
-
-              <button className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded opacity-0 group-hover:opacity-100 duration-200 hover:bg-red-600">
-                <Trash2 className="w-3 h-3" />
-              </button>
             </div>
           ))}
 
@@ -150,6 +137,7 @@ const ContentArea: React.FC<ContentAreaProps> = ({
                 <button
                   className="p-1 bg-red-500 text-white rounded hover:bg-red-600"
                   title="Delete"
+                  onClick={() => deleteFile(file.id, onReloadFiles)}
                 >
                   <Trash2 className="w-3 h-3" />
                 </button>
@@ -200,14 +188,6 @@ const ContentArea: React.FC<ContentAreaProps> = ({
               <div className="col-span-2 text-dark-4 text-sm">—</div>
               <div className="col-span-2 text-dark-4 text-sm">
                 {folder.createdAt.toLocaleDateString()}
-              </div>
-              <div className="col-span-2 flex items-center gap-2">
-                <button
-                  className="p-1 text-red-500 hover:bg-red-50 rounded"
-                  title="Delete"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
               </div>
             </div>
           ))}
@@ -283,6 +263,7 @@ const ContentArea: React.FC<ContentAreaProps> = ({
                 <button
                   className="p-1 text-red-500 hover:bg-red-50 rounded"
                   title="Delete"
+                  onClick={() => deleteFile(file.id, onReloadFiles)}
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
