@@ -30,7 +30,6 @@ const FileUploadManager: React.FC = () => {
   const [showNewFolderModal, setShowNewFolderModal] = useState(false);
   const [newFolderName, setNewFolderName] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const folderInputRef = useRef<HTMLInputElement>(null);
   //fetch files
   useEffect(() => {
     const getData = async () => {
@@ -49,7 +48,6 @@ const FileUploadManager: React.FC = () => {
 
         setFiles(mappedFiles);
 
-        // Dynamically generate unique folders
         const uniqueFolders = Array.from(
           new Set(
             mappedFiles
@@ -202,15 +200,6 @@ const FileUploadManager: React.FC = () => {
             <Upload className="w-4 h-4" />
             {isUploading ? "Uploading..." : "Upload Files"}
           </button>
-
-          <button
-            onClick={() => folderInputRef.current?.click()}
-            disabled={isUploading}
-            className="flex items-center gap-2 px-4 py-2 bg-blue/10 text-blue border border-blue/20 rounded-md hover:bg-blue/20 duration-200 disabled:opacity-50"
-          >
-            <Upload className="w-4 h-4" />
-            Upload Folder
-          </button>
         </div>
       </div>
 
@@ -297,10 +286,16 @@ const FileUploadManager: React.FC = () => {
               <input
                 type="text"
                 placeholder="Folder name"
-                value={newFolderName}
-                onChange={(e) => setNewFolderName(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-3 rounded-md focus:border-blue focus:ring-2 focus:ring-blue/20 focus:outline-none"
                 autoFocus
+              />
+            </div>
+            <div className="p-4">
+              <input
+                type="file"
+                multiple
+                ref={fileInputRef}
+                className="w-full px-4 py-2 border border-gray-3 rounded-md focus:border-blue focus:ring-2 focus:ring-blue/20 focus:outline-none"
               />
             </div>
             <div className="flex items-center justify-end gap-3 p-4 border-t border-gray-3">
