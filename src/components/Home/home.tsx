@@ -14,10 +14,10 @@ import React, { useState, useRef } from "react";
 import { Upload, FolderPlus, X, Grid, List } from "lucide-react";
 import FilterComponent from "./filterpage";
 import BreadcrumbComponent from "../Common/Breadcrumb";
-import ContentArea from "./content";
+import ContentArea from "./tabledata";
 import { fetchFiles, uploadFile } from "@/Helper/handleapi";
 import { useEffect } from "react";
-
+import { getFileType } from "@/components/Home/Utilities/fileUtils";
 const FileUploadManager: React.FC = () => {
   const [files, setFiles] = useState([]);
   const [folders, setFolders] = useState([]);
@@ -71,18 +71,6 @@ const FileUploadManager: React.FC = () => {
     getData();
   }, []);
 
-  // File type detection
-  const getFileType = (mimeType: string): FileType => {
-    if (mimeType.startsWith("image/")) return "images";
-    if (mimeType.startsWith("video/")) return "videos";
-    if (
-      mimeType.includes("pdf") ||
-      mimeType.includes("document") ||
-      mimeType.includes("text")
-    )
-      return "documents";
-    return "others";
-  };
   // Filter files
   const filteredFiles = files.filter((file) => {
     const matchesFolder = currentFolder
