@@ -99,18 +99,33 @@ const ContentArea: React.FC<ContentAreaProps> = ({
               onClick={() => onFileSelect(file.id)}
             >
               <div className="flex flex-col items-center text-center">
-                {file.type.startsWith(`${BASE_URL}/`) ? (
+                {file.type.startsWith("image/") ? (
                   <img
-                    src={`${file.path}`}
+                    src={file.path}
                     alt={file.name}
-                    className="w-12 h-12 object-cover rounded mb-3"
+                    className="w-8 h-8 object-cover rounded flex-shrink-0"
+                  />
+                ) : file.type.startsWith("video/") ? (
+                  <video
+                    src={file.path}
+                    className="w-8 h-8 rounded flex-shrink-0 object-cover"
+                    muted
+                    loop
+                    playsInline
+                  />
+                ) : file.type.includes("pdf") ? (
+                  <iframe
+                    src={`https://docs.google.com/gview?url=${encodeURIComponent(
+                      file.path
+                    )}&embedded=true`}
+                    className="w-12 h-12 rounded mb-3"
+                    title={file.name}
                   />
                 ) : (
-                  <div className="w-12 h-12 flex items-center justify-center text-blue mb-3">
-                    {getFileIcon(file.type)}
+                  <div className="w-8 h-8 flex items-center justify-center bg-gray-100 rounded">
+                    <FileText className="w-5 h-5 text-gray-500" />
                   </div>
                 )}
-
                 <h3 className="font-medium text-dark text-sm truncate w-full mb-1">
                   {file.name}
                 </h3>
@@ -214,17 +229,34 @@ const ContentArea: React.FC<ContentAreaProps> = ({
                 />
               </div>
               <div className="col-span-5 flex items-center gap-3">
-                {file.type.startsWith(`${BASE_URL}/`) ? (
+                {file.type.startsWith("image/") ? (
                   <img
                     src={file.path}
                     alt={file.name}
                     className="w-8 h-8 object-cover rounded flex-shrink-0"
                   />
+                ) : file.type.startsWith("video/") ? (
+                  <video
+                    src={file.path}
+                    className="w-8 h-8 rounded flex-shrink-0 object-cover"
+                    muted
+                    loop
+                    playsInline
+                  />
+                ) : file.type.includes("pdf") ? (
+                  <iframe
+                    src={`https://docs.google.com/gview?url=${encodeURIComponent(
+                      file.path
+                    )}&embedded=true`}
+                    className="w-12 h-12 rounded mb-3"
+                    title={file.name}
+                  />
                 ) : (
-                  <div className="text-blue flex-shrink-0">
-                    {getFileIcon(file.type)}
+                  <div className="w-8 h-8 flex items-center justify-center bg-gray-100 rounded">
+                    <FileText className="w-5 h-5 text-gray-500" />
                   </div>
                 )}
+
                 <span className="font-medium text-dark truncate">
                   {file.name}
                 </span>
