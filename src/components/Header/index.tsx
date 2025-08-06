@@ -1,23 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { BASE_URL, fetchLogo } from "@/Helper/handleapi";
-
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 const Header = () => {
   const [stickyMenu, setStickyMenu] = useState(false);
-  const [logo, setLogo] = useState([]);
-
-  useEffect(() => {
-    fetchLogo()
-      .then((data) => {
-        setLogo(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching logo:", error);
-      });
-  }, []);
 
   // Sticky menu
   const handleStickyMenu = () => {
@@ -69,43 +56,11 @@ const Header = () => {
         >
           {/* <!-- header top left --> */}
           <div className="xl:w-auto flex-col sm:flex-row w-full flex sm:justify-between sm:items-center gap-5 sm:gap-10">
-            {logo.map((d) => (
-              <Link href="/" key={d._id}>
-                <img
-                  src={`${BASE_URL}/images/${d.image}`}
-                  alt="Logo"
-                  style={{ width: "140px" }}
-                />
-              </Link>
-            ))}
-
-            <div className="max-w-[475px] w-full">
-              <form>
-                <div className="flex items-center">
-                  <div className="relative max-w-[333px] sm:min-w-[333px] w-full">
-                    {/* <!-- divider --> */}
-                    <span className="absolute left-0 top-1/2 -translate-y-1/2 inline-block w-px h-5.5 bg-gray-4"></span>
-                    <input
-                      type="search"
-                      name="search"
-                      id="search"
-                      placeholder="Search ..."
-                      autoComplete="off"
-                      className="custom-search w-full rounded-r-[5px] bg-gray-1 !border-l-0 border border-gray-3 py-2.5 pl-4 pr-10 outline-none ease-in duration-200"
-                    />
-
-                    <button
-                      type="submit"
-                      id="search-btn"
-                      aria-label="Search"
-                      className="flex items-center justify-center absolute right-3 top-1/2 -translate-y-1/2 ease-in duration-200 hover:text-blue"
-                    >
-                      <i className="bi bi-search"></i>
-                    </button>
-                  </div>
-                </div>
-              </form>
-            </div>
+            <Link href="/">
+              <h3 className="text-custom-2 font-semibold">
+                File Storage system
+              </h3>
+            </Link>
           </div>
 
           {/* <!-- header top right --> */}
