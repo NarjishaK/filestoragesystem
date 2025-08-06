@@ -10,7 +10,9 @@ export const metadata: Metadata = {
 const ErrorPage = () => {
   return (
     <main>
+      <div className="py-20">
       <Error />
+     </div>
     </main>
   );
 };

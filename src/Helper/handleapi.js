@@ -79,3 +79,15 @@ export const deleteFile = async (id, onSuccess) => {
     }
   }
 };
+
+
+//get file by id
+export const getFileById = async (id) => {
+  const token = localStorage.getItem("token");
+  const response = await axios.get(`${BASE_URL}/filestorage/${id}`,{
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
